@@ -12,6 +12,8 @@ Before you begin, ensure that the following tools are installed on your system:
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - (Optional) `sudo` privileges if your system requires them
+- use node 22 (nvm use 22)
+- run: npm install all
 
 ---
 

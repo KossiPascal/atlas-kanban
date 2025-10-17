@@ -15,14 +15,10 @@ webapp/uploads
 webapp/converted_forms
 webapp/venv
 pythons
-
 api/dist
 api/serviceAccountKey.json
 api/src/send_mail.py
 api/src/smpt.ts
-
 shared-libs
-
 webapp/env.ts
-
 ZZZZZZ-FILES
