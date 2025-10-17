@@ -28,12 +28,12 @@ Before you begin, ensure that the following tools are installed on your system:
 
 
 ## 🚀 Running the Application
+    ```bash
+    sudo docker compose up --build -d
 
-sudo docker compose up --build -d
+    http://localhost:<PORT>
 
-http://localhost:<PORT>
-
-sudo docker compose down
+    sudo docker compose down
 
 
 
