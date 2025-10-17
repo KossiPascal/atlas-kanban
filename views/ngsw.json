@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1760690614917,
+  "timestamp": 1760701324488,
   "appData": [
     "/index.html",
     "/*.bundle.css",
@@ -44,7 +44,7 @@
   "dataGroups": [],
   "hashTable": {
     "/default-src_app_guards_auth-guard_ts-node_modules_angular_cdk_fesm2022_a11y-module-BYox5gpI_m-59064a.cb0b01b1e58d9bea.js": "cbdc9a686f53cc03774c01247a08a791cb1e8bb4",
-    "/favicon.ico": "07f15e9ed87a7c2472982bcabe676d065b68b4cc",
+    "/favicon.ico": "fd22613172c7180920672956cc1f1e97c4fa509a",
     "/index.html": "3892b86d0969315c76a49311242c4388c0ad77e0",
     "/main.7a6a8ee97a6ad4a2.js": "79bd8dc62388403f0b8fbd0700d749065e2c1313",
     "/polyfills.f29a4d5231b11bc7.js": "8dc7e2f4541e58f3673d024d4a2d2d3db183adb2",
