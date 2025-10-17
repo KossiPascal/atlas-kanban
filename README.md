@@ -38,7 +38,9 @@ sudo docker compose down
 
 
 ## 📁 Project Structure
+
     ```bash
+    # Project Structure
     atlas-kanban/
     ├── api                     # NestJs Api Folder (Backend)
     ├── webapp                  # Angular App Folder (Frontend)
