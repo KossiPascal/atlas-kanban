@@ -22,7 +22,7 @@
     "install-webapp": "cd webapp && npm install",
     "start-api": "cd api && npm run start",
     "send-git": "git status && git add . && git status && git commit -m \"Initial Commit\" && git status && git push -u origin main && git status",
-    "all": "npm run install-api & npm run install-webapp"
+    "all": "npm install & npm run install-api & npm run install-webapp"
   },
   "author": "Kossi TSOLEGNAGBO",
   "license": "ISC",
