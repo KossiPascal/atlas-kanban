@@ -1,0 +1,63 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2>Welcome Back 👋</h2>
+    <p class="subtitle">Login to access your dashboard</p>
+
+    <form [formGroup]="form" (ngSubmit)="loginWith('email')">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required>
+        <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" required>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">Minimum 6 characters</mat-error>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loading || form.invalid"
+        [attr.aria-busy]="loading"
+        [attr.aria-disabled]="loading"
+      >
+        <ng-container *ngIf="!loading">Login</ng-container>
+        <ng-container *ngIf="loading">
+          <mat-progress-spinner
+            diameter="20"
+            mode="indeterminate"
+            color="accent">
+          </mat-progress-spinner>
+          <span class="loading-text">Logging in...</span>
+        </ng-container>
+      </button>
+    </form>
+
+    <div class="oauth-buttons" *ngIf="!loading">
+      <button mat-stroked-button color="accent" (click)="loginWith('google')">
+        <i class="fa-brands fa-google"></i> Login with Google
+      </button>
+      <button mat-stroked-button color="warn" (click)="loginWith('microsoft')">
+        <i class="fa-brands fa-microsoft"></i> Login with Microsoft
+      </button>
+    </div>
+
+    <div class="links" *ngIf="!loading">
+      <a routerLink="/auths/forgot-password">Forgot password?</a>
+      <p>Don't have an account? <a routerLink="/auths/register">Register</a></p>
+    </div>
+
+    <!-- Overlay loader when authenticating -->
+    <div class="overlay" *ngIf="loading">
+      <div class="loader">
+        <div class="spinner"></div>
+        <p>Authenticating...</p>
+      </div>
+    </div>
+  </div>
+</div>

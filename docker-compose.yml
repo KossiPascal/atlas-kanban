@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ${PROJECT_FOLDER:-.}
+      dockerfile: ./Dockerfile
+    container_name: atlas-api
+    restart: unless-stopped 
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    env_file:
+      - ./.env
+    environment:
+
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+      - FIREBASE_PRIVATE_KEY_ID=${FIREBASE_PRIVATE_KEY_ID}
+      - FIREBASE_CLIENT_ID=${FIREBASE_CLIENT_ID}
+      - FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL}
+      - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}
+      - FIREBASE_SERVICE_ACCOUNT_PATH=${FIREBASE_SERVICE_ACCOUNT_PATH}
+    volumes:
+      - ${PROJECT_FOLDER:-.}/api:/app/api
+      - ${PROJECT_FOLDER:-.}/views:/app/views
+    # command: npm run start:dev
+    networks:
+      - atlas-api-net
+
+
+networks:
+  atlas-api-net:
+    name: ${MAP_NETWORK:-atlas-api-net}
+    driver: bridge

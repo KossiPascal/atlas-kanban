@@ -1,0 +1,175 @@
+<!-- NOTE: include remixicon link in index.html as explained -->
+<div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" (click)="onBackdropClick($event)">
+  <div *ngIf="task" class="modal" role="document" aria-describedby="modalDesc">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="title-wrap">
+        <div class="modal-title" id="modalTitle">
+          <i class="ri-task-line" style="font-size:20px;color:var(--accent)"></i>
+          <span id="titleLabel">{{ task.title ? task.title : 'Visualisation' }}</span>
+        </div>
+        <!-- <div class="pill-meta small muted">Kanban • Project</div> -->
+      </div>
+
+      <div class="header-controls">
+        <!-- <button class="btn-icon" id="themeToggle" title="Basculer thème (auto)">
+          <i class="ri-sun-line"></i>
+        </button>
+        <button class="btn-icon" id="helpBtn" title="Aide">
+          <i class="ri-question-line"></i>
+        </button> -->
+        <button class="btn-icon" id="closeBtn" aria-label="Fermer" (click)="closeModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body (two columns) -->
+    <div class="modal-body">
+
+      <!-- LEFT: FORM -->
+      <div class="form-col" aria-hidden="false">
+
+        <!-- TITLE -->
+        <div class="input-card focus" role="group" aria-labelledby="labelTitle">
+          <label for="titleInput" class="label-row">
+            <div class="label" id="labelTitle"><i class="ri-edit-2-line fi-icon"></i> Titre de la tâche </div>
+            <!-- <div class="hint small muted">Champ requis</div> -->
+          </label>
+
+          <label for="titleInput" class="field" data-field="title" id="fieldTitle" [class.filled]="task.title.trim()">
+            <input id="titleInput" type="text" placeholder=" " aria-required="true" [(ngModel)]="task.title" [disabled]="true" [readOnly]="true"/>
+          </label>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="input-card focus">
+          <label for="descInput" class="label-row">
+            <div class="label"><i class="ri-file-text-line fi-icon"></i> Description</div>
+            <!-- <div class="hint small muted">Détails, étapes, contexte</div> -->
+          </label>
+          <label for="descInput" class="field" data-field="desc" id="fieldDesc" [class.filled]="task.description.trim()">
+            <textarea id="descInput" placeholder=" " [(ngModel)]="task.description" [disabled]="true" [readOnly]="true"></textarea>
+          </label>
+        </div>
+
+        <!-- TAG & ASSIGN -->
+        <div class="row-2">
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Étiquette</div>
+              <!-- <div class="hint small muted">Couleur & création</div> -->
+            </div>
+            <div class="tag-picker" id="tagsList">
+              <ng-container *ngFor="let t of state.tags">
+                <div *ngIf="task.tag?.id === t.id" class="tag-chip" [style.background]="withOpacity(t.color, 0.1)" [style.transform]="'none'">
+                  <div class="dot" [style.background]="t.color"></div> <span [style.color]="t.color">{{ t.name }}</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Assigner</div>
+              <!-- <div class="hint small muted">Rechercher & multi</div> -->
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="assignees" id="assigneeList">
+                <div *ngFor="let u of state.assignees" class="avatar small" [title]="u.displayName||u.email" [style.background]="u.color">
+                  {{ getInitials(u.displayName||u.email) }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="muted small" style="margin-top:8px">Selectionnés : <span id="assigneesCount">{{ state.assignees.length }}</span></div> -->
+          </div>
+        </div>
+
+        <!-- DUE DATE & PRIORITY -->
+        <div class="row-2">
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Date limite</div>
+              <!-- <div class="hint small muted">Définir échéance</div> -->
+            </div>
+            <div class="field" id="fieldDue" [class.filled]="task.due">
+              <i class="ri-calendar-line fi-icon"></i>
+              <input id="dueInput" type="date" [(ngModel)]="task.due" [disabled]="true" [readOnly]="true"/>
+            </div>
+          </div>
+
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Priorité</div>
+              <!-- <div class="hint small muted">Visibilité</div> -->
+            </div>
+            <div class="tag-picker" id="prioritiesList">
+
+              <ng-container *ngFor="let v of state.prioritiesList" >
+
+                <div *ngIf="task.priority?.id == v.id" class="tag-chip" 
+                  [attr.data-priority]="v.id" 
+                  [style.background]="v.big.bg" 
+                  [style.color]="v.big.color"
+                  [style.transform]="'none'" 
+                  [title]="v.name"
+                  >
+                  <div class="dot" [style.background]="v.small.bg"></div>
+                  {{ v.label || 'Low' }}
+                </div>
+
+              </ng-container>
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKLIST -->
+        <div class="input-card focus">
+          <div class="label-row">
+            <div class="label">Checklist</div>
+            <!-- <div class="hint small muted">Drag pour réordonner + Entrée pour ajouter</div> -->
+          </div>
+          <div class="checklist" id="checklist">
+            <div *ngFor="let ck of state.checklist" class="ck-item" draggable="true" [attr.data-id]="ck.id">
+              <input style="zoom: 1.5;" type="checkbox" aria-label="Done" [(ngModel)]="ck.done" [disabled]="true" [readOnly]="true"/>
+              <input type="text" placeholder="Élément" [(ngModel)]="ck.name" [disabled]="true" [readOnly]="true"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATTACHMENTS -->
+        <div class="input-card focus">
+          <div class="label-row">
+            <div class="label">Pièces jointes</div>
+            <!-- <div class="hint small muted">Drag&Drop / Ctrl+V</div> -->
+          </div>
+          <div id="filesPreview" style="margin-top:10px; display:flex; flex-direction:column; gap:4px">
+            <div *ngFor="let f of state.files" class="file-preview" [attr.data-id]="f.id">
+              <div class="file-thumb">
+                <ng-container *ngIf="f.url; else fileIcon">
+                  <img [src]="f.url" style="width:100%;height:100%;object-fit:cover;border-radius:8px" />
+                </ng-container>
+                <ng-template #fileIcon><i class="ri-file-line" style="font-size:20px;color:#334155"></i></ng-template>
+              </div>
+              <div class="file-meta">
+                <div style="font-weight:400; font-size: 10px;">{{ f.name }}</div>
+                <div class="file-size muted"  style="font-size: 10px;">{{ (f.size / 1024) | number:'1.0-0' }} KB</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer actions -->
+    <!-- <div class="modal-actions">
+      <button class="btn secondary" id="cancelBtn" (click)="closeModal()">Annuler</button>
+      <button class="btn primary" id="saveBtn" (click)="saveTask()">Enregistrer</button>
+    </div> -->
+
+  </div>
+</div>

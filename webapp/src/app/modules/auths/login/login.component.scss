@@ -1,0 +1,148 @@
+.auth-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0e7ff, #fef3c7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+
+  h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    color: #64748b;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  button[mat-raised-button] {
+    width: 100%;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &:not(:disabled):hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .loading-text {
+      font-size: 0.9rem;
+      color: #fff;
+    }
+  }
+
+  .oauth-buttons {
+    margin-top: 20px;
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      border-radius: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      i {
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .links {
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #64748b;
+
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #1d4ed8;
+      }
+    }
+  }
+
+  /* Overlay loader when logging in */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+    z-index: 999;         /* high so it intercepts clicks */
+    pointer-events: auto; /* allow overlay to intercept clicks */
+
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #e5e7eb;
+        border-top: 5px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      p {
+        margin-top: 12px;
+        color: #1e293b;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

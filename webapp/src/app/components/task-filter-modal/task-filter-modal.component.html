@@ -1,0 +1,56 @@
+<div class="modal-backdrop" (click)="onClose()"></div>
+
+<div class="modal" (click)="$event.stopPropagation()">
+  <header class="modal-header">
+    <h2><i class="fas fa-filter"></i> Filtrer les tâches</h2>
+    <button class="close-btn" (click)="onClose()">×</button>
+  </header>
+
+  <div class="modal-body">
+    <div class="filters">
+
+      <!-- Statut -->
+      <div class="filter" *ngIf="prioritiesList.length > 0">
+        <label for="status">Priority</label>
+        <select id="status" [(ngModel)]="filter.priority" multiple>
+          <option *ngFor="let p of prioritiesList" [value]="p.value">{{ p.label }}</option>
+        </select>
+      </div>
+
+      <!-- Assigné -->
+      <div class="filter" *ngIf="assignedList.length > 0">
+        <label for="assigned">Assigné à</label>
+        <select id="assigned" [(ngModel)]="filter.assigned" multiple>
+          <option *ngFor="let a of assignedList" [value]="a.value">{{ a.label }}</option>
+        </select>
+      </div>
+
+      <!-- Étiquette -->
+      <div class="filter" *ngIf="tagsList.length > 0">
+        <label for="tag">Étiquette</label>
+        <select id="tag" [(ngModel)]="filter.tag" multiple>
+          <option *ngFor="let t of tagsList" [value]="t.value">{{ t.label }}</option>
+        </select>
+      </div>
+
+      <!-- Date -->
+      <div class="filter date-range">
+        <label>Date d’échéance (entre)</label>
+        <div class="date-inputs">
+          <input type="date" [(ngModel)]="filter.startDate" />
+          <span>et</span>
+          <input type="date" [(ngModel)]="filter.endDate" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="modal-footer">
+    <button class="btn cancel" (click)="onClose()">
+      <i class="fas fa-times"></i> Annuler
+    </button>
+    <button class="btn apply" (click)="onApply()">
+      <i class="fas fa-check"></i> Appliquer
+    </button>
+  </footer>
+</div>

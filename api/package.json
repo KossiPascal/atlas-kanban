@@ -1,0 +1,32 @@
+{
+  "name": "atlas-kanban-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nest start --watch",
+    "start:nest": "nest start",
+    "build": "nest build",
+    "start:prod": "node dist/main.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/platform-socket.io": "^11.1.6",
+    "@nestjs/serve-static": "^5.0.3",
+    "@nestjs/websockets": "^11.1.6",
+    "firebase": "^12.3.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.5.0",
+    "nodemailer": "^7.0.6",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
+    "@types/nodemailer": "^7.0.1",
+    "typescript": "^5.9.3"
+  }
+}

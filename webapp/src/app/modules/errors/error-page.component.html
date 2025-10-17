@@ -1,0 +1,10 @@
+<div class="big-container">
+  <div class="container">
+    <div class="icon">{{ icon }}</div>
+    <h1>{{ code }}</h1>
+    <p>{{ message }}</p>
+    <button (click)="goBack()">Page précédente</button>
+    <button *ngIf="showGoToHome" (click)="goToHome()">Aller à l’accueil</button>
+    <button (click)="logout()">Se Déconnecter</button>
+  </div>
+</div>

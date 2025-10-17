@@ -1,0 +1,40 @@
+{
+  "name": "app-core",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "repository": "https://github.com/KossiPascal/atlas-kanban",
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.2.4"
+  },
+  "workspaces": [
+    "./shared-libs/*"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/KossiPascal/atlas-kanban"
+  },
+  "scripts": {
+    "start": "npm run clean & npm run start-api",
+    "clean": "npm cache clean --force",
+    "install-api": "cd api && npm install",
+    "start-api": "cd api && npm run start",
+    "send-git": "git status && git add . && git status && git commit -m \"Initial Commit\" && git status && git push -u origin main && git status",
+    "install-webapp": "cd webapp && npm install"
+  },
+  "author": "Kossi TSOLEGNAGBO",
+  "license": "ISC",
+  "dependencies": {
+    "gaze": "^1.1.3",
+    "nodemon": "^3.1.0",
+    "pouchdb": "^9.0.0",
+    "ts-node": "^10.9.2",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5"
+  }
+}

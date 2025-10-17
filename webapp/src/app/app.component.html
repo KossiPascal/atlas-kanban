@@ -1,0 +1,28 @@
+<!-- <router-outlet></router-outlet> -->
+
+<main class="app-shell">
+  <header class="topbar" *ngIf="user">
+    <div class="left">
+      <h1 class="brand">Atlas Tech <span class="muted">• Kanban</span></h1>
+      <nav class="tabs">
+        <button class="tab">Overview</button>
+        <button routerLink="/tasks" class="tab active">Tasks</button>
+        <button class="tab">Notes</button>
+        <button class="tab">Questions</button>
+      </nav>
+    </div>
+    <div class="right">
+      <button class="btn-ghost">Board <i class="ri-dashboard-line"></i></button>
+      
+      <button (click)="logout()" class="btn-ghost">
+        {{ user.displayName?.split(' ')?.[0] ?? user.email?.split('.')?.[0] ?? 'Logout' }}
+         <i class="fas fa-sign-out-alt"></i>
+        <!-- Logout <i class="fa-solid fa-right-from-bracket"></i> -->
+      </button>
+    </div>
+  </header>
+
+  <section class="content">
+     <router-outlet></router-outlet>
+  </section>
+</main>

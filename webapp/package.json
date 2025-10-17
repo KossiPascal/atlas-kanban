@@ -1,0 +1,93 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "private": true,
+  "author": "TSOLEGNAGBO Kossi <kossi.tsolegnagbo@gmail.com>",
+  "description": "Kendeya Dashboard for CHWs follow-up",
+  "homepage": "https://atlas-kanban.portal-integratehealth.org",
+  "repository": "https://github.com/KossiPascal/atlas-kanban",
+  "contributors": [
+    {
+      "name": "TSOLEGNAGBO Kossi",
+      "email": "kossi.tsolegnagbo@gmail.com"
+    }
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/KossiPascal/atlas-kanban"
+  },
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --port 4200 --hmr",
+    "startNoHmr": "ng serve --no-hmr",
+    "start-ssl": "ng serve --ssl=true",
+    "clean": "npm cache clean --force",
+    "serve": "npm run clean && ng serve --configuration production",
+    "build": "rm -rf ./.angular && rm -rf ../views && npm run clean && ng build --service-worker --optimization --configuration production --aot --output-hashing=all --named-chunks --stats-json",
+    "simple-build": "ng build --service-worker --optimization --configuration production --aot --output-hashing=all --named-chunks --stats-json",
+    "compile": "ngc",
+    "watch": "ng build --watch --configuration development",
+    "coverage": "ng test --no-watch --code-coverage",
+    "lint": "ng lint",
+    "test": "ng test",
+    "precache": "sw-precache --verbose --config=sw-precache-config.js"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100,
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "parser": "typescript"
+  },
+  "dependencies": {
+    "@angular/animations": "^19.2.1",
+    "@angular/cdk": "^19.2.2",
+    "@angular/common": "^19.2.1",
+    "@angular/compiler": "^19.2.1",
+    "@angular/core": "^19.2.15",
+    "@angular/fire": "^20.0.1",
+    "@angular/forms": "^19.2.1",
+    "@angular/localize": "^19.2.2",
+    "@angular/material": "^19.2.19",
+    "@angular/platform-browser": "^19.2.1",
+    "@angular/platform-browser-dynamic": "^19.2.1",
+    "@angular/router": "^19.2.1",
+    "@angular/service-worker": "^19.2.1",
+    "@nestjs/platform-socket.io": "^11.1.6",
+    "@nestjs/websockets": "^11.1.6",
+    "@ngrx/store": "^19.0.1",
+    "axios": "^1.8.2",
+    "dexie": "^4.2.0",
+    "firebase": "^12.3.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.5.0",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.7.1",
+    "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "localforage": "^1.10.0",
+    "ngx-bootstrap": "^19.0.2",
+    "nodemailer": "^7.0.9",
+    "rxjs": "~7.8.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "sweetalert2": "^11.22.2",
+    "tslib": "^2.8.1",
+    "uuid": "^13.0.0",
+    "zone.js": "^0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.1",
+    "@angular/cli": "^19.2.1",
+    "@angular/compiler-cli": "^19.2.1",
+    "@types/jquery": "^3.5.32",
+    "@types/leaflet": "^1.9.20",
+    "@types/leaflet.markercluster": "^1.5.6",
+    "@types/nodemailer": "^7.0.2",
+    "typescript": "5.8",
+    "webpack": "^5.100.2",
+    "workbox-cli": "^7.3.0"
+  }
+}

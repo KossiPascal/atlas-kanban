@@ -1,0 +1,307 @@
+<!-- NOTE: include remixicon link in index.html as explained -->
+<div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" (click)="onBackdropClick($event)">
+  <div class="modal" role="document" aria-describedby="modalDesc">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="title-wrap">
+        <div class="modal-title" id="modalTitle">
+          <i class="ri-task-line" style="font-size:20px;color:var(--accent)"></i>
+          <span id="titleLabel">{{ editedTask.title ? 'Modifier la tâche' : 'Nouvelle tâche' }}</span>
+        </div>
+        <!-- <div class="pill-meta small muted">Kanban • Project</div> -->
+      </div>
+
+      <div class="header-controls">
+        <!-- <button class="btn-icon" id="themeToggle" title="Basculer thème (auto)">
+          <i class="ri-sun-line"></i>
+        </button>
+        <button class="btn-icon" id="helpBtn" title="Aide">
+          <i class="ri-question-line"></i>
+        </button> -->
+        <button class="btn-icon" id="closeBtn" aria-label="Fermer" (click)="closeModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body (two columns) -->
+    <div class="modal-body">
+
+      <!-- LEFT: FORM -->
+      <div class="form-col" aria-hidden="false">
+
+        <!-- TITLE -->
+        <div class="input-card focus" role="group" aria-labelledby="labelTitle">
+          <label for="titleInput" class="label-row">
+            <div class="label" id="labelTitle"><i class="ri-edit-2-line fi-icon"></i> Titre de la tâche </div>
+            <!-- <div class="hint small muted">Champ requis</div> -->
+          </label>
+          <label for="titleInput" class="field" data-field="title" id="fieldTitle" [class.filled]="(editedTask.title||'').trim()">
+            <input id="titleInput" type="text" placeholder=" " aria-required="true" [(ngModel)]="editedTask.title" />
+            <!-- <span class="floating-label">Titre *</span> -->
+          </label>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="input-card focus">
+          <label for="descInput" class="label-row">
+            <div class="label"><i class="ri-file-text-line fi-icon"></i> Description</div>
+            <!-- <div class="hint small muted">Détails, étapes, contexte</div> -->
+          </label>
+          <label for="descInput" class="field" data-field="desc" id="fieldDesc" [class.filled]="editedTask.description.trim()">
+            
+            <textarea id="descInput" placeholder=" " [(ngModel)]="editedTask.description"></textarea>
+            <!-- <span class="floating-label">Description</span> -->
+          </label>
+        </div>
+
+        <!-- TAG & ASSIGN -->
+        <div class="row-2">
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Étiquette</div>
+              <!-- <div class="hint small muted">Couleur & création</div> -->
+            </div>
+            <div class="tag-picker" id="tagsList">
+              <div 
+                *ngFor="let t of state.tags" class="tag-chip" 
+                [style.background]="isTagSelected(t) ? t.color : provider.withOpacity(t.color, 0.1)" 
+                (click)="selectTag(t)">
+                <!-- [style.transform]="isTagSelected(t) ? 'translateY(-10px) scale(1.02)' : 'none'"  -->
+
+                <!-- <div class="dot" [style.background]="t.color"></div>  -->
+                <input style="margin: 0px; padding: 0px;" type="radio" name="tagy" [checked]="isTagSelected(t)" [readOnly]="true">
+                <span [style.color]="isTagSelected(t) ? 'white' : t.color">{{ t.name }}</span>  
+                <span style="margin-left: 5px; color:red; cursor: pointer;" (click)="removeTag(t)">x</span>
+              </div>
+            </div>
+
+            <div class="tag-editor">
+              <input id="newTagName" type="text" class="assignee-input assignee1" placeholder="Ajouter une étiquette (ex: Urgent)" [(ngModel)]="state.newTag.name" />
+              <input id="newTagColor" type="color" [(ngModel)]="state.newTag.color" style="width:25px;height:25px;border-radius:4px;border:none;cursor:pointer" />
+              <!-- <input id="newTagBackColor" type="hidden" [(ngModel)]="newTag.bg" style="width:10px;height:10px;border-radius:8px;border:none;cursor:pointer" /> -->
+              <button class="btn " style="padding: 2px; font-size: 8px;" id="createTagBtn" (click)="addTag()">Créer</button>
+            </div>
+          </div>
+          
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Assigner</div>
+              <!-- <div class="hint small muted">Rechercher & multi</div> -->
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="assignees" id="assigneeList">
+                <div *ngFor="let u of state.assignees" class="avatar small" [title]="u.displayName||u.email" [style.background]="u.color" (click)="removeAssignee(u)">
+                  {{ getInitials(u.displayName||u.email) }}
+                </div>
+              </div>
+              <input id="assigneeInput" class="assignee-input assignee2" placeholder="Rechercher un user..." [(ngModel)]="state.assigneeQuery" (keydown.enter)="addAssigneeFromQuery()" />
+            </div>
+            <div class="muted small" style="margin-top:8px">Selectionnés : <span id="assigneesCount">{{ state.assignees.length }}</span></div>
+
+            <!-- quick suggestions -->
+            <div class="avatar-list">
+              <ng-container *ngFor="let u of state.usersList">
+                <div *ngIf="!isSelectedUser(u)" class="avatar" [style.background]="u.color" title="{{u.displayName||''}}{{ u.email ? ('\n' + u.email) : '' }}" (click)="toggleAddAssignee(u)">
+                  {{ getInitials(u.displayName||u.email) }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- DUE DATE & PRIORITY -->
+        <div class="row-2">
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Date limite</div>
+              <!-- <div class="hint small muted">Définir échéance</div> -->
+            </div>
+            <div class="field" id="fieldDue" [class.filled]="editedTask.due">
+              <i class="ri-calendar-line fi-icon"></i>
+              <input id="dueInput" type="date" [(ngModel)]="editedTask.due" />
+              <!-- <span class="floating-label">Date limite</span> -->
+            </div>
+          </div>
+
+          <div class="input-card focus">
+            <div class="label-row">
+              <div class="label">Priorité</div>
+              <!-- <div class="hint small muted">Visibilité</div> -->
+            </div>
+            <div class="tag-picker" id="prioritiesList">
+
+              <div *ngFor="let v of state.prioritiesList" 
+                  class="tag-chip" 
+                  [attr.data-priority]="v.id" 
+                  [style.background]="isPrioritySelected(v) ? v.big.bg : 'none'" 
+                  [style.color]="isPrioritySelected(v) ? v.big.color : 'none'"
+                  [title]="v.name"
+                  (click)="selectPriority(v)"> 
+                  
+                  <!-- [style.transform]="isPrioritySelected(v) ? 'translateY(-8px) scale(1.02)' : 'none'"  -->
+                  
+                  <!-- optional for tooltip -->
+      
+              <input style="margin: 0px; padding: 0px;" type="radio" name="priority" [checked]="isPrioritySelected(v)" [readOnly]="true">
+                <!-- <div class="dot" [style.background]="v.small.bg"></div> -->
+                <div [style.color]="v.small.bg" style="margin-right: 2px;">{{ v.label || 'Low' }}</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKLIST -->
+        <div class="input-card focus">
+          <div class="label-row"><div class="label">Checklist</div>
+            <!-- <div class="hint small muted">Drag pour réordonner + Entrée pour ajouter</div> -->
+          </div>
+            <div class="checklist" id="checklist">
+              <div *ngFor="let ck of state.checklist" class="ck-item"
+                  draggable="true"
+                  [attr.data-id]="ck.id"
+                  (dragstart)="onCheckDragStart($event, ck.id)"
+                  (dragend)="onCheckDragEnd()"
+                  (dragover)="onCheckDragOver($event, ck.id)">
+                  
+                <input
+                  style="zoom: 1.5;"
+                  type="checkbox"
+                  aria-label="Done"
+                  [checked]="ck.done?.ok"
+                  (change)="onDoneChange($event, ck)"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Élément"
+                  [(ngModel)]="ck.name"
+                />
+
+                <div class="ck-controls">
+                  <button style="padding: 4px;" class="btn ghost small"
+                          title="Dupliquer"
+                          (click)="duplicateCheckItem(ck.id)">
+                    Cloner
+                  </button>
+                  <button style="padding: 4px;" class="btn ghost small"
+                          title="Supprimer"
+                          (click)="removeCheckItem(ck.id)">
+                    X
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          <div style="display:flex;gap:4px;margin-top:10px;">
+            <input id="newCheckInput" class="assignee-input assignee3" placeholder="Nouvel élément de checklist..." [(ngModel)]="state.newCheckText" (keydown.enter)="addCheckItem()" />
+            <button class="btn ghost" id="addCheckBtn" (click)="addCheckItem()">Ajouter</button>
+          </div>
+        </div>
+
+        <!-- ATTACHMENTS -->
+        <div class="input-card focus">
+          <div class="label-row">
+            <div class="label">Pièces jointes</div>
+            <!-- <div class="hint small muted">Drag&Drop / Ctrl+V</div> -->
+          </div>
+          <div class="dropzone" id="dropzone" tabindex="0" aria-label="Zone de dépôt de fichiers"
+               (click)="fileInputRef.nativeElement.click()"
+               (dragover)="onDropzoneDragOver($event)"
+               (drop)="onDropzoneDrop($event)">
+            <div class="muted small">Déposer des fichiers ou cliquer pour sélectionner</div>
+            <input #fileInput id="fileInput" type="file" multiple style="display:none" (change)="onFileInputChange($event)" />
+          </div>
+          <div id="filesPreview" style="margin-top:10px; display:flex; flex-direction:column; gap:8px">
+            <div *ngFor="let f of state.files" class="file-preview" [attr.data-id]="f.id">
+              <div class="file-thumb">
+                <ng-container *ngIf="f.url; else fileIcon">
+                  <img [src]="f.url" style="width:100%;height:100%;object-fit:cover;border-radius:8px" />
+                </ng-container>
+                <ng-template #fileIcon><i class="ri-file-line" style="font-size:20px;color:#334155"></i></ng-template>
+              </div>
+              <div class="file-meta">
+                <div style="font-weight:700">{{ f.name }}</div>
+                <div class="file-size muted">{{ (f.size / 1024) | number:'1.0-0' }} KB</div>
+              </div>
+              <div style="margin-left:auto;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+                <button class="remove-file" title="Retirer" (click)="removeFile(f.id)"><i class="ri-close-line"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: META / PREVIEW -->
+      <!-- <aside class="meta-col">
+        <div class="card preview">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:800">Aperçu rapide</div>
+              <div class="muted small">Résumé de la tâche</div>
+            </div>
+            <div class="muted small">#ID <span id="taskId">{{ taskId }}</span></div>
+          </div>
+
+          <div style="margin-top:12px; display:flex;flex-direction:column; gap:10px;">
+            <div class="meta-row">
+              <div><strong>Titre</strong></div>
+              <div id="previewTitle" class="muted small">{{ title || '—' }}</div>
+            </div>
+            <div class="meta-row">
+              <div><strong>Date limite</strong></div>
+              <div id="previewDue" class="muted small">{{ due || '—' }}</div>
+            </div>
+            <div class="meta-row">
+              <div><strong>Étiquette</strong></div>
+              <div id="previewTag" class="muted small">{{ state.preview.tag || '—' }}</div>
+            </div>
+            <div class="meta-row">
+              <div><strong>Assignees</strong></div>
+              <div id="previewAssign" class="muted small">
+                {{ getAssigneeNames() }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="small muted">Thème</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="accentPicker" [(ngModel)]="accentColor" (input)="onAccentChange($event)" title="Couleur accent" />
+              <button class="btn secondary" id="resetAccent" (click)="resetAccent()">Reset</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="small muted">Aperçu du style</div>
+            <div style="margin-top:10px; display:flex;gap:8px;flex-wrap:wrap">
+              <div class="tag-chip"><div class="dot" style="background:var(--accent)"></div> Accent</div>
+              <div class="tag-chip"><div class="dot" style="background:#06b6d4"></div> Info</div>
+              <div class="tag-chip"><div class="dot" style="background:#10b981"></div> Success</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Raccourcis</strong><div class="muted small">Esc = fermer • Ctrl/Cmd+Enter = enregistrer</div></div>
+            <button class="btn ghost" id="helpShort">?</button>
+          </div>
+        </div>
+      </aside> -->
+
+    </div>
+
+    <!-- Footer actions -->
+    <div class="modal-actions">
+      <button class="btn secondary" id="cancelBtn" (click)="closeModal()">Annuler</button>
+      <button class="btn primary" id="saveBtn" (click)="saveTask()">Enregistrer</button>
+    </div>
+
+  </div>
+</div>

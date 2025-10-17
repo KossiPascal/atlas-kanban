@@ -1,0 +1,94 @@
+<!-- NOTE: include remixicon link in index.html as explained -->
+<div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" (click)="onBackdropClick($event)">
+  <div class="modal" role="document" aria-describedby="modalDesc">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="title-wrap">
+        <div class="modal-title" id="modalTitle">
+          <i class="ri-task-line" style="font-size:20px;color:var(--accent)"></i>
+          <span id="titleLabel">{{ task.title ? 'Modifier la tâche' : 'Nouvelle tâche' }}</span>
+        </div>
+        <!-- <div class="pill-meta small muted">Kanban • Project</div> -->
+      </div>
+
+      <div class="header-controls">
+        <!-- <button class="btn-icon" id="themeToggle" title="Basculer thème (auto)">
+          <i class="ri-sun-line"></i>
+        </button>
+        <button class="btn-icon" id="helpBtn" title="Aide">
+          <i class="ri-question-line"></i>
+        </button> -->
+        <button class="btn-icon" id="closeBtn" aria-label="Fermer" (click)="closeModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body (two columns) -->
+    <div class="modal-body">
+
+      <!-- LEFT: FORM -->
+      <div class="form-col" aria-hidden="false">
+
+        <!-- CHECKLIST -->
+        <div class="input-card focus">
+          <div class="label-row"><div class="label">Checklist</div>
+            <div class="hint small muted">Drag pour réordonner</div>
+          </div>
+          
+          <div class="checklist" id="checklist">
+            <div *ngFor="let ck of state.checklist" class="ck-item"
+                draggable="true"
+                [attr.data-id]="ck.id"
+                (dragstart)="onCheckDragStart($event, ck.id)"
+                (dragend)="onCheckDragEnd()"
+                (dragover)="onCheckDragOver($event, ck.id)">
+                
+              <input
+                style="zoom: 1.5;"
+                type="checkbox"
+                aria-label="Done"
+                [checked]="ck.done?.ok"
+                (change)="onDoneChange($event, ck)"
+              />
+
+              <input
+                type="text"
+                placeholder="Élément"
+                [(ngModel)]="ck.name"
+              />
+
+              <div class="ck-controls">
+                <button style="padding: 4px;" class="btn ghost small"
+                        title="Dupliquer"
+                        (click)="duplicateCheckItem(ck.id)">
+                  Cloner
+                </button>
+                <button style="padding: 4px; color:red;" class="btn ghost small"
+                        title="Supprimer"
+                        (click)="removeCheckItem(ck.id)">
+                  x
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:4px;margin-top:10px;">
+            <input id="newCheckInput" class="assignee-input assignee3" placeholder="Nouvel élément de checklist..." [(ngModel)]="state.newCheckText" (keydown.enter)="addCheckItem()" />
+            <button class="btn ghost" id="addCheckBtn" (click)="addCheckItem()">Ajouter</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer actions -->
+    <div class="modal-actions">
+      <button class="btn secondary" id="cancelBtn" (click)="closeModal()">Annuler</button>
+      <button class="btn primary" id="saveBtn" (click)="saveTask()">Enregistrer</button>
+    </div>
+
+  </div>
+</div>

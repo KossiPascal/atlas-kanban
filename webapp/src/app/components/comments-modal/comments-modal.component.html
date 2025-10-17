@@ -1,0 +1,94 @@
+<div class="modal-backdrop" (click)="close()"></div>
+
+<div class="modal" [class.dark-mode]="darkMode">
+  <!-- Header -->
+  <div class="modal-header">
+    <h3>{{ task.title }}</h3>
+    <div class="header-actions">
+      <button class="mode-toggle" (click)="toggleDarkMode()">
+        <i class="fa" [ngClass]="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+      </button>
+      <button class="close-btn" (click)="close()">&times;</button>
+    </div>
+  </div>
+
+  <!-- Chat Messages -->
+  <div class="chat-container" #scrollMe>
+    <div *ngIf="loading" class="loading">Chargement...</div>
+
+    <div *ngFor="let c of comments$ | async; trackBy: trackById" class="chat-message" [ngClass]="{'outgoing': c.by === user.uid, 'incoming': c.by !== user.uid, 'deleted': c.deleted}" [@fadeIn]>
+      
+
+      <!-- Message Content -->
+      <div class="message-content">
+        <div class="message-ctx">
+          <!-- Avatar -->
+          <div class="avatar">
+            <img *ngIf="c.photoURL; else initials" [src]="c.photoURL"/>
+            <ng-template #initials>
+              <span>{{ c.by | slice:0:2 | uppercase }}</span>
+            </ng-template>
+          </div>
+
+          <div class="message-bubble" [@bubbleAnim]>
+            <!-- <ng-container *ngIf="!c.editing && !c.deleted; else editTpl"> -->
+            <ng-container>
+              <span class="text">{{ c.msg }}</span>
+            </ng-container>
+
+            <!-- <ng-template #editTpl>
+              <input type="text" [(ngModel)]="c.msg" class="edit-input"/>
+              <div class="edit-actions">
+                <button (click)="saveEdit(c)"><i class="fa fa-check"></i></button>
+                <button (click)="cancelEdit(c)"><i class="fa fa-times"></i></button>
+              </div>
+            </ng-template> -->
+          </div>
+        </div>
+
+
+
+        <!-- Meta -->
+        <div class="message-meta">
+          <div class="msg-hours">
+            <i class="author">{{ c.by === user.uid ? 'Vous' : c.by }} à </i>
+            <i class="time"> {{ c.at | date:'shortTime' }}</i>
+          </div>
+          <span *ngIf="!c.seen" class="seen">✔✔</span>
+
+          <!-- Reactions -->
+          <div class="reactions" *ngIf="!c.deleted">
+            <span *ngFor="let r of c.reactions">{{ r }}</span>
+          </div>
+        </div>
+
+        <!-- Actions (hidden until hover) -->
+        <div class="message-actions">
+          <button (click)="addReaction(c, '👍')">👍</button>
+          <button (click)="addReaction(c, '❤️')">❤️</button>
+          <button (click)="addReaction(c, '😂')">😂</button>
+
+          <!-- <button title="Réactions"><i class="fa fa-smile"></i></button> -->
+          <button title="Éditer" (click)="editComment(c)"><i class="fa fa-edit"></i></button>
+          <button title="Supprimer" (click)="deleteComment(c)"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Typing indicator -->
+  <div class="typing-indicator" *ngIf="typingUser && typingUser !== user.uid">
+    {{ typingUser }} est en train d’écrire...
+  </div>
+
+  <!-- Add Comment -->
+  <div class="add-comment">
+    <input type="text" placeholder="Écrire un message..." [(ngModel)]="newComment" (keydown)="onTyping()" (keydown.enter)="addComment()"/>
+    <button style="background-color: brown; margin-right: 10px;" *ngIf="selectedComment" (click)="cancelSelected()">X</button>
+    <button (click)="addComment()">
+      <i class="fa fa-paper-plane"></i>
+    </button>
+  </div>
+</div>

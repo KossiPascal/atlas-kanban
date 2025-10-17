@@ -1,0 +1,78 @@
+<!-- NOTE: include remixicon link in index.html as explained -->
+<div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" (click)="onBackdropClick($event)">
+  <div class="modal" role="document" aria-describedby="modalDesc">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="title-wrap">
+        <div class="modal-title" id="modalTitle">
+          <i class="ri-task-line" style="font-size:20px;color:var(--accent)"></i>
+          <span id="titleLabel">{{ task.title ? 'Modifier la tâche' : 'Nouvelle tâche' }}</span>
+        </div>
+        <!-- <div class="pill-meta small muted">Kanban • Project</div> -->
+      </div>
+
+      <div class="header-controls">
+        <!-- <button class="btn-icon" id="themeToggle" title="Basculer thème (auto)">
+          <i class="ri-sun-line"></i>
+        </button>
+        <button class="btn-icon" id="helpBtn" title="Aide">
+          <i class="ri-question-line"></i>
+        </button> -->
+        <button class="btn-icon" id="closeBtn" aria-label="Fermer" (click)="closeModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body (two columns) -->
+    <div class="modal-body">
+
+      <!-- LEFT: FORM -->
+      <div class="form-col" aria-hidden="false">
+
+        <!-- ATTACHMENTS -->
+        <div class="input-card focus">
+          <div class="label-row">
+            <div class="label">Pièces jointes</div>
+            <!-- <div class="hint small muted">Drag&Drop / Ctrl+V</div> -->
+          </div>
+          <div class="dropzone" id="dropzone" tabindex="0" aria-label="Zone de dépôt de fichiers"
+               (click)="fileInputRef.nativeElement.click()"
+               (dragover)="onDropzoneDragOver($event)"
+               (drop)="onDropzoneDrop($event)">
+            <div class="muted small">Déposer des fichiers ou cliquer pour sélectionner</div>
+            <input #fileInput id="fileInput" type="file" multiple style="display:none" (change)="onFileInputChange($event)" />
+          </div>
+          <div id="filesPreview" style="margin-top:10px; display:flex; flex-direction:column; gap:4px">
+            <div *ngFor="let f of files" class="file-preview" [attr.data-id]="f.id">
+              <div class="file-thumb">
+                <ng-container *ngIf="f.url; else fileIcon">
+                  <img [src]="f.url" style="width:100%;height:100%;object-fit:cover;border-radius:8px" />
+                </ng-container>
+                <ng-template #fileIcon><i class="ri-file-line" style="font-size:20px;color:#334155"></i></ng-template>
+              </div>
+              <div class="file-meta">
+                <div style="font-weight:400; font-size: 10px;">{{ f.name }}</div>
+                <div class="file-size muted" style="font-size: 10px;">{{ (f.size / 1024) | number:'1.0-0' }} KB</div>
+              </div>
+              <div style="margin-left:auto;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+                <button class="remove-file" title="Retirer" (click)="removeFile(f.id)"><i class="ri-close-line"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+ 
+      </div>
+
+    </div>
+
+    <!-- Footer actions -->
+    <div class="modal-actions">
+      <button class="btn secondary" id="cancelBtn" (click)="closeModal()">Annuler</button>
+      <button class="btn primary" id="saveBtn" (click)="saveTask()">Enregistrer</button>
+    </div>
+
+  </div>
+</div>

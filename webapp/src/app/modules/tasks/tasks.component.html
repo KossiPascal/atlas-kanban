@@ -1,0 +1,130 @@
+<section *ngIf="columns.length > 0; else emptyBoard" class="board" role="region" aria-label="Board">
+  <div class="board-columns">
+      <h3 style="margin: 0px; padding: 0px;">Filtrer les tâches <i style="cursor: pointer;" (click)="openFilterModal()" class="fas fa-plus-circle"></i> (<b>{{filterCount}}</b>)</h3>
+
+    <!-- <div class="task-filters">
+      <div class="filters">
+        <div class="filter">
+          <label for="status">Statut</label>
+          <select id="status" name="status">
+            <option value="">Tous</option>
+            <option value="pending">En attente</option>
+            <option value="in-progress">En cours</option>
+            <option value="done">Terminée</option>
+          </select>
+        </div>
+
+        <div class="filter">
+          <label for="assigned">Assigné à</label>
+          <select id="assigned" name="assigned">
+            <option value="">Tous</option>
+            <option value="john">John Doe</option>
+            <option value="amina">Amina Koné</option>
+            <option value="kossi">Kossi T.</option>
+          </select>
+        </div>
+
+        <div class="filter">
+          <label for="tag">Étiquette</label>
+          <select id="tag" name="tag">
+            <option value="">Toutes</option>
+            <option value="urgent">Urgent</option>
+            <option value="important">Important</option>
+            <option value="optionnel">Optionnel</option>
+          </select>
+        </div>
+
+        <div class="filter">
+          <label for="dueDate">Date d’échéance</label>
+          <input type="date" id="dueDate" name="dueDate" />
+        </div>
+      </div>
+    </div> -->
+
+    <div class="task-colums">
+      <div *ngFor="let col of columns; trackBy: trackByColumn"
+         class="column"
+         [class.expanded]="dragOverColId === col.id"
+         (dragover)="onDragOverColumn($event, col.id, getColumnTaks(col.id))"
+         (dragleave)="onDragLeaveColumn($event, col.id)"
+         (drop)="onDropInColumn($event, col.id, getColumnTaks(col.id))">
+
+      <div class="column-header">
+        <div class="title">
+          <span class="dot" [style.background]="col.color"></span>{{ col.title }}
+          <span class="count">{{ getColumnTaks(col.id).length }}</span>
+        </div>
+        <div class="meta">
+
+          <!-- <div class="more-options">
+            <button class="more-btn" aria-label="Options" (click)="toggleMenu(col.id, $event)">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <div class="more-menu" *ngIf="this.openMenuId === col.id">
+              <button class="option" (click)="deleteColumn(col)"><i class="fa-solid fa-trash"></i> Supprimer</button>
+              <button class="option" (click)="editColumn(col)"><i class="fa-solid fa-pen"></i> Modifier</button>
+              <button class="option" (click)="shareColumn(col)"><i class="fa-solid fa-share-nodes"></i> Partager</button>
+              <button class="option" (click)="assignColumn(col)"><i class="fa-solid fa-user-plus"></i> Assigner</button>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+
+      <button class="add-btn" (click)="addTask(col.id)">+ Add New Task</button>
+
+      <ng-container *ngIf="getColumnTaks(col.id).length > 0; else emptyCol">
+        <div *ngFor="let t of getColumnTaks(col.id); let i = index; trackBy: trackById" class="task-wrapper">
+          
+          <!-- Placeholder avant -->
+          <div *ngIf="getPlaceholderIndex(col.id) === i" class="drop-placeholder" [style.height.px]="draggedTaskHeight || 50"></div>
+
+          <div class="task-item"
+               draggable="true"
+               (dragstart)="onDragTaskStart($event, t, i, col.id)"
+               (dragend)="onDragTaskEnd($event)">
+            <app-task-builder 
+              [task]="t" 
+              [columnId]="col.id"
+              (onEditTask)="editTask($event)"
+              (onDeleteTask)="deleteTask($event)"
+              (onShareTask)="shareTask($event)"
+              (onAssignTask)="assignTask($event)"
+              ></app-task-builder>
+          </div>
+        </div>
+
+        <!-- {{ getPlaceholderIndex(col.id) }} / {{ getColumnTaks(col.id).length }} -->
+
+
+        <!-- Placeholder à la fin -->
+        <div *ngIf="getPlaceholderIndex(col.id) === getColumnTaks(col.id).length" class="drop-placeholder" [style.height.px]="draggedTaskHeight || 50"></div>
+      </ng-container>
+
+      <ng-template #emptyCol>
+        <!-- Placeholder pour colonne vide -->
+        <div *ngIf="getPlaceholderIndex(col.id) === 0" class="drop-placeholder" [style.height.px]="draggedTaskHeight || 50"></div>
+      </ng-template>
+
+      </div>
+    </div>
+  </div>
+
+  <app-task-modal 
+    *ngIf="modalOpen"
+    [task]="selectedTask"
+    [columnId]="modalColumnId"
+    [userId]="userId"
+    (save)="saveTask($event)"
+    (close)="closeModal($event)">
+  </app-task-modal>
+    <!-- (save)="onModalSave($event)" -->
+</section>
+
+
+
+        
+
+<ng-template #emptyBoard>
+  <div class="empty-message">No columns available</div>
+</ng-template>

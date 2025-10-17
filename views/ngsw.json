@@ -1,0 +1,76 @@
+{
+  "configVersion": 1,
+  "timestamp": 1760690614917,
+  "appData": [
+    "/index.html",
+    "/*.bundle.css",
+    "/*.bundle.js",
+    "/*.chunk.js"
+  ],
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/default-src_app_guards_auth-guard_ts-node_modules_angular_cdk_fesm2022_a11y-module-BYox5gpI_m-59064a.cb0b01b1e58d9bea.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.7a6a8ee97a6ad4a2.js",
+        "/polyfills.f29a4d5231b11bc7.js",
+        "/runtime.72c626f51f917602.js",
+        "/src_app_modules_auths_auths_module_ts.807174b12371bbb9.js",
+        "/src_app_modules_errors_errors_module_ts.ee29fd98d055b064.js",
+        "/src_app_modules_tasks_tasks_module_ts.7a39459d88de99ff.js",
+        "/styles.ceb9aeb1cd570f5c.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/default-src_app_guards_auth-guard_ts-node_modules_angular_cdk_fesm2022_a11y-module-BYox5gpI_m-59064a.cb0b01b1e58d9bea.js": "cbdc9a686f53cc03774c01247a08a791cb1e8bb4",
+    "/favicon.ico": "07f15e9ed87a7c2472982bcabe676d065b68b4cc",
+    "/index.html": "3892b86d0969315c76a49311242c4388c0ad77e0",
+    "/main.7a6a8ee97a6ad4a2.js": "79bd8dc62388403f0b8fbd0700d749065e2c1313",
+    "/polyfills.f29a4d5231b11bc7.js": "8dc7e2f4541e58f3673d024d4a2d2d3db183adb2",
+    "/runtime.72c626f51f917602.js": "7ae53c02d6fd6f92667e29c0303b41671a48fc34",
+    "/src_app_modules_auths_auths_module_ts.807174b12371bbb9.js": "60bc1834201f4a8d5386b4f4c25b457b95b23bf6",
+    "/src_app_modules_errors_errors_module_ts.ee29fd98d055b064.js": "cebd993d1de8f7b7ff5e8a7ae83e8d263a41364e",
+    "/src_app_modules_tasks_tasks_module_ts.7a39459d88de99ff.js": "a15bbbcfe2f5294ad020ccdbd40f00c981fa0805",
+    "/styles.ceb9aeb1cd570f5c.css": "f6373b72a31edd73f5839a2cc5d690b8be9f0440"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

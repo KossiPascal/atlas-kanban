@@ -1,0 +1,259 @@
+
+.board-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.task-colums {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.column {
+  width: 280px;
+  background: transparent;
+  /* background: red; */
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 300px;
+  height: 100%;
+  transition: height 0.18s ease, background-color 0.18s ease, border 0.18s ease;
+}
+
+.column.expanded {
+  min-height: 500px;
+  /* 300px + 200px */
+  background-color: #f9f9f9;
+  /* petit feedback visuel */
+}
+
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: #0b2547;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.count {
+  background: #fff;
+  padding: 1px 12px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  font-weight: 700;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.meta i {
+  font-size: 20px;
+}
+
+.add-btn {
+  width: 100%;
+  background: #fff;
+  border: 1px dashed rgba(15, 23, 42, 0.06);
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  color: #2b5bf6;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Mobile-friendly stack */
+@media (max-width: 900px) {
+  .board-columns {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .column {
+    width: 100%;
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .column-header {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 8px 0;
+    z-index: 2;
+  }
+
+  .add-btn {
+    font-size: 14px;
+  }
+}
+
+
+
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+
+.drop-placeholder {
+  border: 2px dashed #3b82f6;
+  border-radius: 6px;
+  height: 50px;
+  background-color: #eff6ff55;
+  transition: all 0.2s ease;
+}
+
+.task-item {
+  transition: all 0.3s ease;
+}
+
+/* Effet shrink & fade de la source */
+.drag-source-hidden {
+  opacity: 0;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: scale(0.95);
+  overflow: hidden;
+  // pointer-events: none;
+}
+
+.ghost-clone {
+  /* style de secours si le navigateur n'applique pas inlines (rare) */
+  transition: transform 120ms ease;
+  will-change: transform, opacity;
+  // transform: rotate(30deg) scale(1.02);
+}
+
+
+
+/* Quand les autres bougent pour laisser la place */
+.task-item.move-up {
+  transform: translateY(-20px);
+}
+
+.task-item.move-down {
+  transform: translateY(20px);
+}
+
+/* Effet d’apparition de l’élément déplacé */
+.task-item.dropped {
+  animation: dropIn 0.3s ease-out;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.more-options {
+  position: relative;
+}
+
+.more-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 2px 6px;
+  color: var(--muted);
+}
+
+.more-btn:hover {
+  color: var(--accent);
+}
+
+.more-menu {
+  position: absolute;
+  top: 120%;
+  /* sous le bouton */
+  right: 0;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  border-radius: 6px;
+  /* display: none; */
+  flex-direction: column;
+  min-width: 120px;
+  z-index: 20;
+}
+
+.more-menu.show {
+  display: flex;
+}
+
+.more-menu .option {
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.more-menu .option:hover {
+  background: #f0f4ff;
+}

@@ -1,0 +1,151 @@
+<article *ngIf="task as t" class="card">
+  <div class="card-header">
+    <div style="display: inline-flex; gap: 2px;">
+      <div class="tags">
+        <div 
+          *ngIf="selectedTag() as tg"
+          class="pill" 
+          tabindex="0" 
+          [ngStyle]="{'background-color': tg.bg, 'color': tg.color}"
+          (click)="toggleDropdownTag($event)">
+          <i class="ri-price-tag-3-line"></i> 
+          {{ tg.name }}
+        </div>
+        <div class="more-tags" *ngIf="openDropdownTagId == t.tag?.id">
+          <div 
+            *ngFor="let tag of provider.tagsList" 
+            [ngStyle]="{'background-color': tag.bg, 'color': tag.color}"
+            class="option" (click)="selectTag(tag)">
+            {{tag.name}}
+          </div>
+        </div>
+      </div>
+      <div class="priorities">
+        <div 
+          *ngIf="selectedPriority() as p"
+          class="pill" 
+          tabindex="0" 
+          [ngStyle]="{'background-color': p.small.bg, 'color': p.small.color, 'font-weight': 'bold'}"
+          (click)="toggleDropdownPriority($event)">
+          {{ p.name }}
+        </div>
+
+        <div class="more-priorities" *ngIf="openDropdownPriorityId == t.priority?.id">
+          <div 
+            *ngFor="let priority of provider.prioritiesList" 
+            [ngStyle]="{'background-color': priority.small.bg, 'color': priority.small.color}"
+            class="option" (click)="selectPriority(priority)">
+            {{priority.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-options">
+      <button class="more-btn" aria-label="Options" (click)="toggleMenu($event)">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div class="more-menu" *ngIf="openMenuId === t.id">
+        <button class="option" (click)="deleteTask()">
+          <i class="fa-solid fa-trash"></i> Supprimer
+        </button>
+        <button class="option" (click)="editTask()">
+          <i class="fa-solid fa-pen"></i> Modifier
+        </button>
+        <button class="option" (click)="shareTask()">
+          <i class="fa-solid fa-share-nodes"></i> Partager
+        </button>
+        <button class="option" (click)="assignTask()">
+          <i class="fa-solid fa-user-plus"></i> Assigner
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="card-title">{{ t.title }}</h4>
+  <div class="desc">{{ t.description }}</div>
+
+  <div class="meta">
+    <div class="stat" [ngClass]="isChecklistFinished() ? 'finished' : 'unfinished'" (click)="openCheckListModal()">
+      <i class="fa-solid fa-list-check"></i>
+      {{ getChecklistProgress() }}
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stats">
+    <div class="stat-item view-outline" (click)="openViewsModal()">
+      <i class="fa-regular fa-eye"></i>
+      <span class="count">{{ getObjectTotal(t.views) }}</span>
+    </div>
+
+    <!-- Comment / Message Stat -->
+    <div class="stat-item comment-outline" (click)="openCommentsModal()">
+      <i class="fa-regular fa-message"></i>
+      <span class="dots">...</span>
+      <span class="count">{{ (t?.comments ?? []).length }}</span>
+    </div>
+
+    <div class="stat-item" (click)="openTaskFilesModal()">
+      <i class="fa-solid fa-paperclip"></i>
+      <span class="count">{{ getAttachmentsTotal(t.attachments) }}</span>
+    </div>
+  </div>
+</article>
+
+
+<!-- 
+<article *ngIf="task as t" class="card">
+  <div class="card-header">
+    <div 
+        class="pill" 
+        tabindex="0" 
+        [ngStyle]="{'background-color': t.tag.bg, 'color': t.tag.color}"
+        (click)="toggleDropdown(t.id, $event)"
+        >
+        <i class="ri-price-tag-3-line"></i> 
+        {{ t.tag.name }}
+    </div>
+    <div class="more-options">
+      <button class="more-btn" aria-label="Options" (click)="toggleMenu(t.id, $event)">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <div class="more-menu" *ngIf="this.openMenuId === t.id">
+        <button class="option" (click)="deleteTask()"><i class="fa-solid fa-trash"></i> Supprimer</button>
+        <button class="option" (click)="editTask()"><i class="fa-solid fa-pen"></i> Modifier</button>
+        <button class="option" (click)="shareTask()"><i class="fa-solid fa-share-nodes"></i> Partager</button>
+        <button class="option" (click)="assignTask()"><i class="fa-solid fa-user-plus"></i> Assigner</button>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="card-title">{{t.title}}</h4>
+  <div class="desc">{{t.description}}</div>
+
+  <div class="meta">
+    <div class="stat" [ngClass]="isChecklistFinished(t) ? 'finished' : 'unfinished'">
+      <i class="fa-solid fa-list-check"></i>
+      {{ getChecklistProgress(t) }}
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+  <div class="stats">
+        <div class="stat-item">
+            <i class="fa-regular fa-eye"></i>
+            <span class="count">{{ getObjectTotal(t.views) }}</span>
+        </div>
+        <div class="stat-item comment-outline">
+            <i class="fa-regular fa-message"></i>
+            <span class="dots">...</span>
+            <span class="count">{{ getObjectTotal(t.comments) }}</span>
+        </div>
+        <div class="stat-item">
+            <i class="fa-solid fa-paperclip"></i>
+            <span class="count">{{ getAttachmentsTotal(t.attachments) }}</span>
+        </div>
+  </div>
+
+</article> -->

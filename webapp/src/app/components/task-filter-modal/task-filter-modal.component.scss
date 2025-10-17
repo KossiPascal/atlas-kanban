@@ -1,0 +1,219 @@
+/* --- Colors and Theme --- */
+$primary: #007bff;
+$primary-hover: darken($primary, 8%);
+$gray-light: #f8f9fb;
+$gray-border: #e1e3e8;
+$text-dark: #333;
+$text-light: #666;
+$shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.08);
+
+/* --- Backdrop --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  // background: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(1px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s ease;
+}
+
+/* --- Modal Box --- */
+.modal {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 14px;
+  width: 460px;
+  max-width: 95%;
+  box-shadow: $shadow-soft;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: popIn 0.3s ease;
+  z-index: 1000;
+}
+
+/* --- Header --- */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, $primary 0%, #4e9bff 100%);
+  padding: 16px 20px;
+  color: #fff;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+  }
+
+  .close-btn {
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+/* --- Body --- */
+.modal-body {
+  padding: 22px 24px;
+  background: #fff;
+
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .filter {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 0.95rem;
+        color: $text-dark;
+        margin-bottom: 6px;
+        font-weight: 500;
+      }
+
+      select,
+      input[type='date'] {
+        padding: 10px 12px;
+        border: 1px solid $gray-border;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        background-color: $gray-light;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $primary;
+          box-shadow: 0 0 0 3px rgba($primary, 0.15);
+          background-color: #fff;
+        }
+      }
+
+      select[multiple] {
+        min-height: 100px;
+        padding: 10px;
+      }
+    }
+
+    .date-range {
+      .date-inputs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        span {
+          color: $text-light;
+          font-size: 0.9rem;
+        }
+
+        input[type='date'] {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+/* --- Footer --- */
+.modal-footer {
+  background: $gray-light;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid $gray-border;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 500;
+
+    i {
+      font-size: 1rem;
+    }
+
+    &.cancel {
+      background: #f0f0f0;
+      color: $text-dark;
+
+      &:hover {
+        background: #e2e2e2;
+      }
+    }
+
+    &.apply {
+      background: $primary;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba($primary, 0.3);
+
+      &:hover {
+        background: $primary-hover;
+        box-shadow: 0 3px 10px rgba($primary, 0.4);
+      }
+    }
+  }
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: translate(-50%, -45%) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- Scroll inside selects --- */
+select::-webkit-scrollbar {
+  width: 6px;
+}
+select::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}

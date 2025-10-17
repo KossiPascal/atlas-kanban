@@ -1,0 +1,119 @@
+.app-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.2rem 0.5rem;
+    margin-bottom: 1rem;
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .brand {
+        font-weight: 700;
+        font-size: 1.25rem;
+        margin: 0;
+        color: #07143a;
+        letter-spacing: -0.3px;
+
+        .muted {
+          color: var(--muted, #6b7280);
+          font-weight: 500;
+          margin-left: 0.5rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0.75rem;
+        margin-left: 1.25rem;
+
+        .tab {
+          background: transparent;
+          border: 0;
+          padding: 0.5rem 0.9rem;
+          border-radius: 8px;
+          font-weight: 600;
+          color: var(--muted, #6b7280);
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: rgba(11, 79, 255, 0.08);
+            color: #0b4fff;
+          }
+
+          &.active {
+            color: #0b4fff;
+            box-shadow: inset 0 -2px 0 rgba(11, 79, 255, 0.12);
+          }
+        }
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .btn-ghost {
+        background: #eef4ff;
+        border: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        color: #0b4fff;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.25s ease;
+        cursor: pointer;
+
+        &:hover {
+          background: #dbe8ff;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 6px rgba(11, 79, 255, 0.1);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        i {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+}
+
+/* 🔄 Smooth fade-in animation for router-outlet transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

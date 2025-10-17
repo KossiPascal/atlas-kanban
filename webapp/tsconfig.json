@@ -1,0 +1,72 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "skipDefaultLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "downlevelIteration": true,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@kba-components/*": ["src/app/components/*"],
+      "@kba-directives/*": ["src/app/directives/*"],
+      "@kba-environments/*": ["src/environments/*"],
+      "@kba-modules/*": ["src/app/modules/*"],
+      "@kba-pipes/*": ["src/app/pipes/*"],
+      "@kba-providers/*": ["src/app/interceptors/*"],
+      "@kba-actions/*": ["src/app/actions/*"],
+      "@kba-effects/*": ["src/app/effects/*"],
+      "@kba-modals/*": ["src/app/modals/*"],
+      "@kba-reducers/*": ["src/app/reducers/*"],
+      "@kba-selectors/*": ["src/app/selectors/*"],
+      "@kba-services/*": ["src/app/services/*"],
+      "@kba-assets/*": ["src/assets/*"],
+      "@kba-models/*": ["src/app/models/*"],
+      "@kba-shared/*": ["src/app/shared/*"],
+      "@kba-backendEnv/*": ["../api/src/env/*"],
+      "@kba-project/*": ["../*"],
+      "@kba-src/*": ["src/*"],
+      "@kba-app/*": ["src/app/*"],
+
+      "types": ["node"],
+      "rxjs": ["node_modules/rxjs"],
+      "rxjs/*": ["node_modules/rxjs/*"]
+    }
+
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}
