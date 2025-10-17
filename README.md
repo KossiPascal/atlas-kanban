@@ -38,11 +38,11 @@ sudo docker compose down
 
 
 ## 📁 Project Structure
-atlas-kanban/
-├── api                     # NestJs Api Folder (Backend)
-├── webapp                  # Angular App Folder (Frontend)
-├── Dockerfile              # Docker build instructions
-├── docker-compose.yml      # Container orchestration
-├── .env                    # Environment configuration file
-├── package.json            # Node.js dependencies and scripts
-└── README.md               # Project documentation
+- atlas-kanban/
+- ├── api                     # NestJs Api Folder (Backend)
+- ├── webapp                  # Angular App Folder (Frontend)
+- ├── Dockerfile              # Docker build instructions
+- ├── docker-compose.yml      # Container orchestration
+- ├── .env                    # Environment configuration file
+- ├── package.json            # Node.js dependencies and scripts
+- └── README.md               # Project documentation
